@@ -1,17 +1,17 @@
-import { DataSource } from "typeorm";
+import { DataSource, type DataSourceOptions, type Repository } from "typeorm";
 import { User } from "../entity/User";
 
 describe('User entity', () => {
     let dataSource: DataSource;
-    let userRepository: any;
+    let userRepository: jest.Mocked<Repository<User>>;
 
     beforeAll(async () => {
         userRepository = {
             save: jest.fn(),
             find: jest.fn(),
-        };
+        } as unknown as jest.Mocked<Repository<User>>;
 
-        dataSource = new DataSource({} as any);
+        dataSource = new DataSource({} as DataSourceOptions);
         (dataSource.getRepository as jest.Mock).mockReturnValue(userRepository);
     });
 

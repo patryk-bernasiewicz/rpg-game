@@ -5,6 +5,7 @@ import { User } from "./entity/User";
 dotenv.config();
 
 export const AppDataSource = new DataSource({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     type: process.env.DB_TYPE as any,
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT || 3306),

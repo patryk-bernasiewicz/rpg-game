@@ -15,7 +15,6 @@ export class User {
     @BeforeInsert()
     @BeforeUpdate()
     async hashPassword() {
-        console.log('====== invoke hashpassword');
         const salt = await genSalt(10);
         this.password = await hash(this.password, salt);
     }
