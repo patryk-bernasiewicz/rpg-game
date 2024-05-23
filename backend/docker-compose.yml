@@ -10,7 +10,7 @@ services:
       MYSQL_USER: rpg
       MYSQL_PASSWORD: rpgp
     ports:
-      - "3306:3306"
+      - '3306:3306'
     volumes:
       - db_data:/var/lib/mysql
 

@@ -4,10 +4,12 @@ import {
   Column,
   BeforeInsert,
   BeforeUpdate,
+  Unique,
 } from 'typeorm';
-import { hash, genSalt } from 'bcrypt';
+import { hash, genSalt, compare } from 'bcrypt';
 
 @Entity()
+@Unique(['username'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,8 +22,12 @@ export class User {
 
   @BeforeInsert()
   @BeforeUpdate()
-  async hashPassword() {
+  async hashPassword(): Promise<void> {
     const salt = await genSalt(10);
     this.password = await hash(this.password, salt);
+  }
+
+  async comparePassword(attempt: string): Promise<boolean> {
+    return compare(attempt, this.password);
   }
 }
