@@ -1,21 +1,27 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
 import { hash, genSalt } from 'bcrypt';
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    username: string;
+  @Column()
+  username: string;
 
-    @Column()
-    password: string;
+  @Column()
+  password: string;
 
-    @BeforeInsert()
-    @BeforeUpdate()
-    async hashPassword() {
-        const salt = await genSalt(10);
-        this.password = await hash(this.password, salt);
-    }
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    const salt = await genSalt(10);
+    this.password = await hash(this.password, salt);
+  }
 }
