@@ -14,7 +14,7 @@ This is a backend for an RPG game project. It's built with Node.js, Express, Typ
 
 ## Installation
 
-This project uses pnpm to manage dependencies and run scripts.
+This project uses pnpm to manage dependencies and run scripts. Dev server is ran using Nodemon.
 
 ```
 pnpm install
@@ -33,6 +33,7 @@ DB_DATABASE=rpg_game
 DB_SYNCHRONIZE=true
 DB_LOGGING=false
 APP_PORT=3000
+JWT_SECRET=secret
 ```
 
 ## Usage
@@ -60,7 +61,8 @@ src/
 
 ## Endpoints
 
-`GET /`
+### `GET /`
+
 Returns "Hello World!"
 
 Response:
@@ -71,7 +73,8 @@ Response:
 }
 ```
 
-`POST /register`
+### `POST /register`
+
 Registers a new user with the provided username and password.
 
 Request body:
@@ -83,12 +86,27 @@ Request body:
 }
 ```
 
+`username` field must be unique.
+
 Response:
 
 ```json
 {
-  "id": 1,
-  "username": "string"
+  "success": true
+}
+```
+
+On successful response, the server creates a http-only cookie containing the authorization JWT token.
+
+### `GET /protected`
+
+Simple endpoint to test the authorization cookie.
+
+Response:
+
+```json
+{
+  "message": "Hello user {username}!"
 }
 ```
 
