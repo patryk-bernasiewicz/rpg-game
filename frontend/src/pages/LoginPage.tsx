@@ -10,7 +10,7 @@ type LoginFormInputsType = {
 };
 
 const loginUser = async (data: LoginFormInputsType) => {
-  const response = await axiosClient.post('/login', data);
+  const response = await axiosClient.post('/api/login', data);
   return response.data;
 };
 
@@ -29,7 +29,7 @@ const LoginPage = () => {
       console.log('==== login successful: ', data);
     },
     onError: (data) => {
-      console.log('===== login failed: ', data);
+      console.log('===== login failed: ', data, data.response.message);
     },
   });
 

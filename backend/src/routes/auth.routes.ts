@@ -37,7 +37,7 @@ router.get('/protected', authMiddleware, async (req, res) => {
   const user = await userRepository.findOneBy({ id: req.userId });
 
   if (!user) {
-    return res.send({ message: 'Invalid login' });
+    return res.status(401).send({ message: 'Invalid login' });
   }
 
   res.send({ message: `Hello user ${user.username}!` });
@@ -49,12 +49,12 @@ router.post('/login', async (req, res) => {
   });
 
   if (!user) {
-    return res.send({ success: false, message: 'Invalid login' });
+    return res.status(401).send({ success: false, message: 'Invalid login' });
   }
 
   const isPasswordValid = await user.comparePassword(req.body.password);
   if (!isPasswordValid) {
-    return res.send({ success: false, message: 'Invalid login' });
+    return res.status(401).send({ success: false, message: 'Invalid login' });
   }
 
   const token = generateToken(user.id);
