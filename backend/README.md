@@ -25,6 +25,7 @@ pnpm install
 Environment variables are used to store database connection information and basic server settings. Create an `.env` file in the root directory and add the following variables:
 
 ```env
+DB_TYPE=mariadb
 DB_HOST=localhost
 DB_PORT=3306
 DB_USERNAME=rpg_user
@@ -33,6 +34,7 @@ DB_DATABASE=rpg_game
 DB_SYNCHRONIZE=true
 DB_LOGGING=false
 APP_PORT=3000
+APP_ORIGINS=http://localhost:5173
 JWT_SECRET=secret
 ```
 
@@ -52,8 +54,17 @@ src/
 │   └── user.test.ts
 ├── config/
 │   └── database.ts
+├── const/
+│   └── auth.ts
 ├── entity/
 │   └── User.ts
+├── middleware/
+│   └── auth.middleware.ts
+├── routes/
+│   ├── auth.routes.ts
+│   └── index.ts
+├── utils/
+│   └── jwt.ts
 ├── websocket/
 │   └── websocketServer.ts
 └── index.ts
@@ -73,7 +84,7 @@ Response:
 }
 ```
 
-### `POST /register`
+### `POST /api/register`
 
 Registers a new user with the provided username and password.
 
@@ -98,7 +109,7 @@ Response:
 
 On successful response, the server creates a http-only cookie containing the authorization JWT token.
 
-### `GET /protected`
+### `GET /api/protected`
 
 Simple endpoint to test the authorization cookie.
 
@@ -107,6 +118,29 @@ Response:
 ```json
 {
   "message": "Hello user {username}!"
+}
+```
+
+### `GET /api/login`
+
+Logs the user in with the provided credendials.
+
+Request body:
+
+```json
+{
+  "username": "string",
+  "password": "string"
+}
+```
+
+Response:
+
+Sets an HTTP-Only cookie with the JWT token.
+
+```json
+{
+  "success": true
 }
 ```
 
