@@ -1,11 +1,13 @@
 import { createServer } from 'http';
 
-import { AppDataSource } from './config/database';
-import { initializeWebSocketServer } from './websocket/websocketServer';
 import app from './app';
+import prisma from './config/database';
+import { initializeWebSocketServer } from './websocket/websocketServer';
 
-AppDataSource.initialize()
-  .then(() => {
+async function startServer() {
+  try {
+    await prisma.$connect();
+
     const server = createServer(app);
 
     initializeWebSocketServer(server);
@@ -14,7 +16,10 @@ AppDataSource.initialize()
     server.listen(port, () => {
       console.log(`Server is listening on port ${port}...`);
     });
-  })
-  .catch((error) => {
-    console.error('[Database Error] %s', error);
-  });
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+    process.exit(1); // Zakończ aplikację w przypadku problemów z połączeniem
+  }
+}
+
+startServer();

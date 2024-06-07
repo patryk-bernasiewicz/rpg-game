@@ -1,5 +1,5 @@
-import { WebSocketServer } from 'ws';
 import { Server } from 'http';
+import { WebSocketServer } from 'ws';
 
 export const initializeWebSocketServer = (server: Server) => {
   const wss = new WebSocketServer({ server });

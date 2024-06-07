@@ -5,3 +5,7 @@
 body {
   @apply bg-slate-800;
 }
+
+a {
+  @apply text-blue-500 underline hover:text-blue-600 focus:text-blue-600;
+}

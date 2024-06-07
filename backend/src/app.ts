@@ -1,10 +1,9 @@
-import 'reflect-metadata';
-import express from 'express';
-import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import * as dotenv from 'dotenv';
+import express from 'express';
+import 'reflect-metadata';
 
-import { AppDataSource } from './config/database';
 import routes from './routes';
 
 dotenv.config();
@@ -21,9 +20,6 @@ app.use(
 app.use(routes);
 
 if (process.env.NODE_ENV === 'test') {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { mockUserRepository } = require('./__tests__/auth.test');
-  AppDataSource.getRepository = jest.fn().mockReturnValue(mockUserRepository);
 }
 
 export default app;

@@ -1,4 +1,2 @@
-import HomePage from './HomePage';
-import LoginPage from './LoginPage';
-
-export { HomePage, LoginPage };
+export * from './Outside';
+export * from './Game';

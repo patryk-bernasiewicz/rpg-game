@@ -7,13 +7,14 @@
     "start": "nodemon",
     "build": "tsc",
     "test": "jest",
-    "lint": "eslint 'src/**/*.{ts,js}'",
+    "lint": "eslint src/**/*.{ts,js} --fix",
     "format": "prettier --write 'src/**/*.{js,ts}'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.15.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -23,11 +24,11 @@
     "mariadb": "^3.3.0",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.20",
     "ws": "^8.17.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
@@ -45,6 +46,7 @@
     "jest-mock-extended": "^3.0.7",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
+    "prisma": "^5.15.0",
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",

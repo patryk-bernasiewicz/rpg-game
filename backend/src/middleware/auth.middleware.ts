@@ -1,14 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/jwt';
-import { TOKEN_NAME } from '../const/auth';
+import { NextFunction, Request, Response } from 'express';
 
-declare global {
-  namespace Express {
-    interface Request {
-      userId?: number;
-    }
-  }
-}
+import { TOKEN_NAME } from '../const/auth';
+import { verifyToken } from '../utils/jwt';
 
 export const authMiddleware = (
   req: Request,
@@ -16,6 +9,7 @@ export const authMiddleware = (
   next: NextFunction,
 ) => {
   const token = req.cookies[TOKEN_NAME];
+  req.userId = null;
 
   if (!token) {
     return res.status(401).send({ success: false, message: 'Unauthorized' });

@@ -1,6 +1,6 @@
 # RPG Game - backend
 
-This is a backend for an RPG game project. It's built with Node.js, Express, TypeScript, MariaDB and TypeORM. It's based partially on standard HTTP requests (for authorization/authentication) and WebSockets.
+This is a backend for an RPG game project. It's built with Node.js, Express, TypeScript, MariaDB and Prisma. It's based partially on standard HTTP requests (for authorization/authentication) and WebSockets.
 
 ## Table of contents
 
@@ -20,19 +20,18 @@ This project uses pnpm to manage dependencies and run scripts. Dev server is ran
 pnpm install
 ```
 
+Create two MariaDB databases named, `rpg` and `rpg_shadow`. Then run Prisma migrations:
+
+```
+npx prisma migrate
+```
+
 ## Configuration
 
 Environment variables are used to store database connection information and basic server settings. Create an `.env` file in the root directory and add the following variables:
 
 ```env
-DB_TYPE=mariadb
-DB_HOST=localhost
-DB_PORT=3306
-DB_USERNAME=rpg_user
-DB_PASSWORD=rpg_password
-DB_DATABASE=rpg_game
-DB_SYNCHRONIZE=true
-DB_LOGGING=false
+DB_URL="mysql://rpg_user:rpg_password@localhost:3306/rpg_game"
 APP_PORT=3000
 APP_ORIGINS=http://localhost:5173
 JWT_SECRET=secret
@@ -56,8 +55,6 @@ src/
 │   └── database.ts
 ├── const/
 │   └── auth.ts
-├── entity/
-│   └── User.ts
 ├── middleware/
 │   └── auth.middleware.ts
 ├── routes/
@@ -67,7 +64,9 @@ src/
 │   └── jwt.ts
 ├── websocket/
 │   └── websocketServer.ts
-└── index.ts
+├── prisma/
+│   └── schema.prisma
+└── app.ts
 ```
 
 ## Endpoints
@@ -93,7 +92,8 @@ Request body:
 ```json
 {
   "username": "string",
-  "password": "string"
+  "password": "string",
+  "email": "string"
 }
 ```
 
@@ -121,7 +121,7 @@ Response:
 }
 ```
 
-### `GET /api/login`
+### `POST /api/login`
 
 Logs the user in with the provided credendials.
 
@@ -136,7 +136,8 @@ Request body:
 
 Response:
 
-Sets an HTTP-Only cookie with the JWT token.
+Sets an HTTP-Only cookie with the JWT token.  
+Status: 201
 
 ```json
 {

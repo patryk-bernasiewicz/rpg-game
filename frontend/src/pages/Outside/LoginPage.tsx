@@ -1,12 +1,20 @@
+import { AxiosError } from 'axios';
+import { useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { TextInput } from '../components/Form';
-import Button from '../components/Form/Button';
-import axiosClient from '../api/axiosClient';
-import { useMutation } from 'react-query';
+import { type UseMutationResult, useMutation } from 'react-query';
+import { Link } from 'react-router-dom';
+
+import axiosClient from '../../api/axiosClient';
+import { Button, FormGenericError, TextInput } from '../../components/Form';
 
 type LoginFormInputsType = {
   username: string;
   password: string;
+};
+
+type LoginQueryResponse = {
+  success: boolean;
+  message?: string;
 };
 
 const loginUser = async (data: LoginFormInputsType) => {
@@ -22,20 +30,23 @@ const LoginPage = () => {
     },
   });
   const { formState } = methods;
+  const [loginError, setLoginError] = useState<string | null>(null);
   const isDisabled = formState.isSubmitting;
 
-  const mutation = useMutation(loginUser, {
+  const mutation: UseMutationResult<
+    LoginQueryResponse,
+    AxiosError<{ message: string }>,
+    LoginFormInputsType
+  > = useMutation(loginUser, {
     onSuccess: (data) => {
       console.log('==== login successful: ', data);
     },
-    onError: (data) => {
-      console.log('===== login failed: ', data, data.response.message);
+    onError: (error) => {
+      setLoginError(error.response?.data?.message || null);
     },
   });
 
-  const onSubmit: SubmitHandler<LoginFormInputsType> = (
-    data: LoginFormInputsType,
-  ) => {
+  const onSubmit: SubmitHandler<LoginFormInputsType> = (data) => {
     mutation.mutate(data);
   };
 
@@ -45,6 +56,7 @@ const LoginPage = () => {
         onSubmit={methods.handleSubmit(onSubmit)}
         className="block max-w-[350px] my-4 mx-auto px-4"
       >
+        <FormGenericError message={loginError} />
         <TextInput
           name="username"
           label="Username"
@@ -58,6 +70,9 @@ const LoginPage = () => {
           rules={{ required: 'Password is required' }}
           disabled={isDisabled}
         />
+        <div className="my-1">
+          <Link to="/forgot-password">Forgot password?</Link>
+        </div>
         <Button type="submit" disabled={isDisabled}>
           Login
         </Button>

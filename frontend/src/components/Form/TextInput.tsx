@@ -1,5 +1,6 @@
 import { InputHTMLAttributes } from 'react';
-import { useFormContext, Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { cn } from '../../utils/cn';
 
 type TextInputProps = InputHTMLAttributes<HTMLInputElement> & {

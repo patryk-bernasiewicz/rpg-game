@@ -1,12 +1,26 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
-import { HomePage, LoginPage } from './pages';
+import { GameLayout, OutsideLayout } from './components/Layouts';
+import {
+  ForgotPasswordPage,
+  GamePage,
+  HomePage,
+  LoginPage,
+  RegisterPage,
+} from './pages';
 
 const App = () => (
   <Router>
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<OutsideLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />\
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />\
+      </Route>
+      <Route path="/game" element={<GameLayout />}>
+        <Route index element={<GamePage />} />
+      </Route>
     </Routes>
   </Router>
 );

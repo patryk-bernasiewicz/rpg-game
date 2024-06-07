@@ -2,9 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-import fetcher from './api/fetcher';
-
 import App from './App.tsx';
+import fetcher from './api/fetcher';
 import './index.css';
 
 const queryClient = new QueryClient({
